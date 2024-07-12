@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 id="myH1">User Registration</h1>
+    <div class="display">
+        <form action="/api/people" method="post">
+            <label for="name">Name :
+                <input type="text" name="name" id="name">
+            </label><br>
+            <button id="mybtn" type="button">submit</button>
+        </form>
+    </div>
+    <div id="result"></div>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+    crossorigin="anonymous"></script>
+    <script>
+    
+            const resultfield = document.getElementById("result");
+            const inputField = document.getElementById("name");
+            async function fetchData(){
+                const {data} = await axios.get('/api/person')
+                const people = data.data.map((element)=>{
+                    return `<h4>${element.name}</h4>`
+                })
+                resultfield.innerHTML = people.join('')
+                inputField.innerHTML=" ";
+
+            }
+            fetchData();
+            const btn = document.getElementById("mybtn")
+            btn.addEventListener('click',async(event)=>{
+                const {data} = await axios.post('/api/person',{name : inputField.value})
+                let personname = data.data
+                let h4element = document.createElement("h4")
+                h4element.textContent=personname
+                resultfield.appendChild(h4element)
+                inputField.innerHTML=" "
+            })
+</script>
+
+</body>
+</html>
